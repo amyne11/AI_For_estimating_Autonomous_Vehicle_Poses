@@ -33,14 +33,31 @@ class VisionTasks(VisionTasksBase):
         :return: matches for descriptors
         :rtype:  list
         """
-        bf=cv2.BFMatcher()
-        matches=bf.knnMatch(des1, des2, k=2)
+        #bf=cv2.BFMatcher()
+   #     matches=bf.knnMatch(des1, des2, k=2)
+    #    dt_matches = []
+     #   for match_list in matches:        
+      #      if match_list[0].distance < threshold:
+       #         dt_matches.append(match_list[0])
+
+        #print(dt_matches)
+
+        #return dt_matches
+        
+        bf = cv2.BFMatcher()
+        knn_matches = bf.knnMatch(des1, des2, k=2)
         dt_matches = []
-        for match_list in matches:        
-            if match_list[0].distance < threshold:
-                dt_matches.append(match_list[0])
+
+        for match_list in knn_matches:
+            good_matches_for_descriptor = []
+            for match in match_list:
+                if match.distance < threshold:
+                    good_matches_for_descriptor.append(match)
+                if good_matches_for_descriptor:
+                    dt_matches.append(good_matches_for_descriptor)
 
         return dt_matches
+
         
 
     def nn(self, des1, des2, threshold=None):
