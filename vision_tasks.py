@@ -34,7 +34,7 @@ class VisionTasks(VisionTasksBase):
         :rtype:  list
         """
         bf = cv2.BFMatcher()
-        knn_matches = bf.knnMatch(des1, des2, k=10)
+        knn_matches = bf.knnMatch(des1, des2, k=2)
         dt_matches=[]
        # for i, match_set in enumerate(knn_matches):
         #    print(f"Matches for descriptor {i}:")
@@ -42,10 +42,14 @@ class VisionTasks(VisionTasksBase):
                 #print(f" - QueryIdx: {match.queryIdx}, TrainIdx: {match.trainIdx}, Distance: {match.distance}")
         
 
-        for match_list in knn_matches:
-            for fm in match_list:
+        for match_pair in knn_matches:
+            if match_pair[0].distance<threshold:
+                dt_matches.append(match_pair[0])
+
+             
+        '''   for fm in match_list:
                 if fm.distance<threshold:
-                    dt_matches.append(fm)
+                    dt_matches.append(fm)'''
         # After you have populated dt_matches with the filtered matches
 
        # print("Filtered Matches:")
