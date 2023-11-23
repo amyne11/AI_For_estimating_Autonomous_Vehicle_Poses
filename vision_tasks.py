@@ -5,7 +5,7 @@
 NB: The default code in non-functional; it simply avoids type errors
 """
 
-__author__ = "USERNAME"
+__author__ = "y54754ae"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 import cv2
@@ -33,7 +33,16 @@ class VisionTasks(VisionTasksBase):
         :return: matches for descriptors
         :rtype:  list
         """
-        return []
+        bf=cv2.BFMatcher()
+        matches=bf.knnMatch(des1, des2, k=100)
+        dt_matches = []
+        for match_list in matches:
+            for match in match_list:
+                if match.distance < threshold:
+                    dt_matches.append(match)
+
+        return dt_matches
+        
 
     def nn(self, des1, des2, threshold=None):
         """Implements feature matching based on nearest neighbour
