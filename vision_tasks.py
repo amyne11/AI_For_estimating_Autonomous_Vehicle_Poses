@@ -34,12 +34,13 @@ class VisionTasks(VisionTasksBase):
         :rtype:  list
         """
         bf = cv2.BFMatcher()
-        knn_matches = bf.knnMatch(des1, des2, k=2)
+        knn_matches = bf.knnMatch(des1, des2, k=1000)
         dt_matches=[]
 
         for match_list in knn_matches:
-            if match_list[0].distance<threshold:
-                dt_matches.append(match_list[0])
+            for match in match_list:
+                if match.distance<threshold:
+                    dt_matches.append(match)
 
         return dt_matches
                 
@@ -104,18 +105,25 @@ class VisionTasks(VisionTasksBase):
         if not feature_matches:
             return (0, 0), [], []
         
-        curr_coord=[]
+
+        
+        curr_coords=[]
+        distances=[]
         
         prev_kp = kp1[feature_matches.queryIdx]
         prev_coord = (int(prev_kp.pt[0]), int(prev_kp.pt[1]))
+        if isinstance(feature_matches, cv2.DMatch):
+            feature_matches = [feature_matches]
+        for match in feature_matches:
 
-        curr_kp = kp2[feature_matches.trainIdx]
-        curr_coord = [int(curr_kp.pt[0]), int(curr_kp.pt[1])]
+            curr_kp = kp2[match.trainIdx]
+            curr_coord = [int(curr_kp.pt[0]), int(curr_kp.pt[1])]
+            curr_coords.append(curr_coord)
+            distances.append(match.distance)
 
 
         
         
-        distances=[feature_matches.distance]
         
    #     for match in feature_matches:
     #        curr_kp=kp2[match.trainIdx]
