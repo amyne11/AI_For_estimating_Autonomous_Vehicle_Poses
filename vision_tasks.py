@@ -101,30 +101,39 @@ class VisionTasks(VisionTasksBase):
                  distances for feature matches in current image
         :rtype:  tuple, list, list
         """
-        if isinstance(feature_matches, cv2.DMatch):
-            feature_matches = [feature_matches]
         if not feature_matches:
-            return (0,0), [], []
-        prev_coords=None
-        match_coords=[]
-        distances=[]
+            return (0, 0), [], []
+        
+        curr_coord=[]
+        
+        prev_kp = kp1[feature_matches.queryIdx]
+        prev_coord = (int(prev_kp.pt[0]), int(prev_kp.pt[1]))
 
-        for match in feature_matches:
-           # prev_kp=kp1[match.queryIdx]
-            #curr_kp=kp2[match.trainIdx]
+        curr_kp = kp2[feature_matches.trainIdx]
+        curr_coord = [int(curr_kp.pt[0]), int(curr_kp.pt[1])]
 
-            prev_kp = kp1[match.queryIdx] if match.queryIdx < len(kp1) else None
-            curr_kp = kp2[match.trainIdx] if match.trainIdx < len(kp2) else None
 
-            if prev_kp and curr_kp:
-            # Now safe to unpack because we've checked query_kp and ref_kp are not None
-                x_coord_query, y_coord_query = prev_kp.pt
-                x_coord_ref, y_coord_ref = curr_kp.pt
-            if prev_coords is None:
-                prev_coords=(int(x_coord_query), int(y_coord_query)) 
-            curr_coords= (x_coord_ref), int(y_coord_ref)
-            match_coords.append(curr_coords)
-            distances.append(match.distance)
+        
+        
+        distances=[feature_matches.distance]
+        
+   #     for match in feature_matches:
+    #        curr_kp=kp2[match.trainIdx]
+     #       x_coord_curr, y_coord_curr = int(curr_kp.pt[0]), int(curr_kp.pt[1])
+      #      curr_coord.append((x_coord_curr,y_coord_curr))
+       #     distances.append(match.distance)
+        #    print(prev_coord)
+         #   print(curr_coord)
+          #  print(distances)
+
+
+
+
+
+
+        
+        
+        return prev_coord, curr_coord, distances
     
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
