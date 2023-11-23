@@ -38,9 +38,9 @@ class VisionTasks(VisionTasksBase):
         dt_matches=[]
 
         for match_list in knn_matches:
-            for match in match_list:
-                if match.distance<threshold:
-                    dt_matches.append(match)
+            for fm in match_list:
+                if fm.distance<threshold:
+                    dt_matches.append(fm)
 
         return dt_matches
                 
@@ -53,7 +53,7 @@ class VisionTasks(VisionTasksBase):
 
 
                 
-        return ()
+        
 
         
 
