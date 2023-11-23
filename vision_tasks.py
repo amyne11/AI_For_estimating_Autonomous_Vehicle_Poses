@@ -33,30 +33,26 @@ class VisionTasks(VisionTasksBase):
         :return: matches for descriptors
         :rtype:  list
         """
-        #bf=cv2.BFMatcher()
-   #     matches=bf.knnMatch(des1, des2, k=2)
-    #    dt_matches = []
-     #   for match_list in matches:        
-      #      if match_list[0].distance < threshold:
-       #         dt_matches.append(match_list[0])
-
-        #print(dt_matches)
-
-        #return dt_matches
-        
         bf = cv2.BFMatcher()
         knn_matches = bf.knnMatch(des1, des2, k=2)
-        dt_matches = []
+        dt_matches=[]
 
         for match_list in knn_matches:
-            good_matches_for_descriptor = []
-            for match in match_list:
-                if match.distance < threshold:
-                    good_matches_for_descriptor.append(match)
-                if good_matches_for_descriptor:
-                    dt_matches.append(good_matches_for_descriptor)
+            if match_list[0].distance<threshold:
+                dt_matches.append(match_list[0])
 
         return dt_matches
+                
+
+
+    
+        
+
+        
+
+
+                
+        return ()
 
         
 
@@ -105,10 +101,36 @@ class VisionTasks(VisionTasksBase):
                  distances for feature matches in current image
         :rtype:  tuple, list, list
         """
-        return (0,0), [], []
+        if isinstance(feature_matches, cv2.DMatch):
+            feature_matches = [feature_matches]
+        if not feature_matches:
+            return (0,0), [], []
+        prev_coords=None
+        match_coords=[]
+        distances=[]
+
+        for match in feature_matches:
+           # prev_kp=kp1[match.queryIdx]
+            #curr_kp=kp2[match.trainIdx]
+
+            prev_kp = kp1[match.queryIdx] if match.queryIdx < len(kp1) else None
+            curr_kp = kp2[match.trainIdx] if match.trainIdx < len(kp2) else None
+
+            if prev_kp and curr_kp:
+            # Now safe to unpack because we've checked query_kp and ref_kp are not None
+                x_coord_query, y_coord_query = prev_kp.pt
+                x_coord_ref, y_coord_ref = curr_kp.pt
+            if prev_coords is None:
+                prev_coords=(int(x_coord_query), int(y_coord_query)) 
+            curr_coords= (x_coord_ref), int(y_coord_ref)
+            match_coords.append(curr_coords)
+            distances.append(match.distance)
+    
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+def convert_to_coords(pt):
+    # Convert the point to integer coordinates
+        return (int(pt[0]), int(pt[1]))
 if __name__ == '__main__':
     import run_odometry
     run_odometry.main(sys.argv[1:])
