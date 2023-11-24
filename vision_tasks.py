@@ -41,13 +41,13 @@ class VisionTasks(VisionTasksBase):
 
             bf = cv2.BFMatcher()
             knn_matches = bf.knnMatch(des1, des2, k=1500)
-            good_matches = []
+            dt_matches = []
 
             for match_list in knn_matches:
-                filtered_list = [match for match in match_list if match.distance < threshold]
-                good_matches.append(filtered_list)
+                dtmatch_list = [match for match in match_list if match.distance < threshold]
+                dt_matches.append(dtmatch_list)
 
-            return good_matches
+            return dt_matches
         except Exception as e:
             print(f"An error occurred in dt method: {e}")
             return []
@@ -80,18 +80,17 @@ class VisionTasks(VisionTasksBase):
         """
         bf = cv2.BFMatcher()
         knn_matches = bf.knnMatch(des1, des2, k=1)
-        filtered_matches = []
+        nn_matches = []
 
         for match_list in knn_matches:
-            # Since k=1, each match_list contains a single match
             if match_list:
                 closest_match = match_list[0]
                 if closest_match and (threshold is None or closest_match.distance < threshold):
-                    filtered_matches.append([closest_match])
+                    nn_matches.append([closest_match])
                 else:
-                    filtered_matches.append([])  # Append an empty list if no match meets the threshold
+                    nn_matches.append([])  
 
-        return filtered_matches
+        return nn_matches
 
     def nndr(self, des1, des2, threshold):
         """Implements feature matching based on nearest neighbour distance ratio
@@ -108,19 +107,19 @@ class VisionTasks(VisionTasksBase):
         """
         bf = cv2.BFMatcher()
         knn_matches = bf.knnMatch(des1, des2, k=2)
-        nndr_filtered_matches = []
+        nndr_matches = []
 
         for match_pair in knn_matches:
             if len(match_pair) == 2:
                 m, n = match_pair
                 if m.distance < threshold * n.distance:
-                    nndr_filtered_matches.append([m])  # Append as a list
+                    nndr_matches.append([m])  
                 else:
-                    nndr_filtered_matches.append([])  # Append an empty list if the match does not meet the criteria
+                    nndr_matches.append([])  
             else:
-                nndr_filtered_matches.append([])  # Append an empty list if there are not enough matches
+                nndr_matches.append([])  
 
-        return nndr_filtered_matches
+        return nndr_matches
 
     def matching_info(self, kp1, kp2, feature_matches):
         """Collects information about the matches of some feature
@@ -141,32 +140,20 @@ class VisionTasks(VisionTasksBase):
             return (0, 0), [], []
         if isinstance(feature_matches, cv2.DMatch):
             feature_matches = [feature_matches]
-        
-
-        
+ 
         curr_coords=[]
         distances=[]
         prev_coord=None
-        
-                
-        
-        
+
         for match in feature_matches:
             prev_kp = kp1[match.queryIdx]
             if prev_coord is None:
                 prev_coord = (int(prev_kp.pt[0]), int(prev_kp.pt[1]))
 
-
-            
-                
-
-
             curr_kp = kp2[match.trainIdx]
             curr_coords.append((int(curr_kp.pt[0]), int(curr_kp.pt[1])))
             distances.append(match.distance)
-            
-
-
+ 
         return prev_coord, curr_coords, distances
 
         
