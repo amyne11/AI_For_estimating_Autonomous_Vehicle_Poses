@@ -79,27 +79,17 @@ class VisionTasks(VisionTasksBase):
         :return: matches for descriptors
         :rtype:  list
         """
-        def nn(self, des1, des2, threshold=None):
-            try:
-            # Check if descriptors are valid
-                if des1 is None or des2 is None:
-                    print("Descriptors are None")
-                    return []
+        bf = cv2.BFMatcher()
+        knn_matches = bf.knnMatch(des1, des2, k=1)
+        nn_matches = []
 
-                bf = cv2.BFMatcher()
-                matches = bf.knnMatch(des1, des2, k=1)
-                nn_matches = []
+        for match in knn_matches:
+            if match:
+                closest_match = match[0]
+                if closest_match and (threshold is None or closest_match.distance <= threshold):
+                    nn_matches.append(closest_match)
 
-                for match in matches:
-                    if match:
-                        m = match[0]
-                        if m and (threshold is None or m.distance <= threshold):
-                            nn_matches.append(m)
-
-                return nn_matches
-            except Exception as e:
-                print(f"An error occurred in nn method: {e}")
-                return []
+        return nn_matches
 
     def nndr(self, des1, des2, threshold):
         """Implements feature matching based on nearest neighbour distance ratio
