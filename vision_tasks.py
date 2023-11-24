@@ -40,8 +40,9 @@ class VisionTasks(VisionTasksBase):
         
 
         for match_pair in knn_matches:
-            if match_pair[0].distance<threshold:
-                dt_matches.append(match_pair[0])
+            for match in match_pair:
+                if match.distance<threshold:
+                    dt_matches.append(match)
 
              
         '''   for fm in match_list:
@@ -126,7 +127,6 @@ class VisionTasks(VisionTasksBase):
         prev_coord=None
         
                 
-        #prev_coord = (int(prev_kp.pt[0]), int(prev_kp.pt[1]))
         
         
         for match in feature_matches:
@@ -140,7 +140,6 @@ class VisionTasks(VisionTasksBase):
 
 
             curr_kp = kp2[match.trainIdx]
-            #curr_coo = [int(curr_kp.pt[0]), int(curr_kp.pt[1])]
             curr_coords.append((int(curr_kp.pt[0]), int(curr_kp.pt[1])))
             distances.append(match.distance)
             print(curr_coords)
@@ -152,23 +151,7 @@ class VisionTasks(VisionTasksBase):
         
         
         
-   #     for match in feature_matches:
-    #        curr_kp=kp2[match.trainIdx]
-     #       x_coord_curr, y_coord_curr = int(curr_kp.pt[0]), int(curr_kp.pt[1])
-      #      curr_coord.append((x_coord_curr,y_coord_curr))
-       #     distances.append(match.distance)
-        #    print(prev_coord)
-         #   print(curr_coord)
-          #  print(distances)
-
-
-
-
-
-
-        
-        
-        return prev_coord, curr_coord, distances
+   
     
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
