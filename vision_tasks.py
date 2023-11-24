@@ -104,7 +104,15 @@ class VisionTasks(VisionTasksBase):
         :return: matches for descriptors
         :rtype:  list
         """
-        return []
+        bf = cv2.BFMatcher()
+        knn_matches = bf.knnMatch(des1, des2, k=2)
+        nndr_matches=[]
+        for m,n in knn_matches:
+            if m and n:
+                if m.distance< threshold * n.distance:
+                    nndr_matches.append(m)
+
+        return nndr_matches
 
     def matching_info(self, kp1, kp2, feature_matches):
         """Collects information about the matches of some feature
