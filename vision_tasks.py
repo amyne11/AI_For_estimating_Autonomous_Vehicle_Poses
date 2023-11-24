@@ -33,24 +33,18 @@ class VisionTasks(VisionTasksBase):
         :return: matches for descriptors
         :rtype:  list
         """
-        try:
-            # Validate descriptors
-            if des1 is None or des2 is None:
-                print("Descriptors are None")
-                return []
+        
 
-            bf = cv2.BFMatcher()
-            knn_matches = bf.knnMatch(des1, des2, k=1500)
-            dt_matches = []
+        bf = cv2.BFMatcher()
+        knn_matches = bf.knnMatch(des1, des2, k=1500)
+        dt_matches = []
 
-            for match_list in knn_matches:
-                dtmatch_list = [match for match in match_list if match.distance < threshold]
-                dt_matches.append(dtmatch_list)
+        for match_list in knn_matches:
+            dtmatch_list = [match for match in match_list if match.distance < threshold]
+            dt_matches.append(dtmatch_list)
 
-            return dt_matches
-        except Exception as e:
-            print(f"An error occurred in dt method: {e}")
-            return []
+        return dt_matches
+       
                 
 
 
