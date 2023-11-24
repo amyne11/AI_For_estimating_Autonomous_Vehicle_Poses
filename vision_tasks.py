@@ -108,13 +108,19 @@ class VisionTasks(VisionTasksBase):
         """
         bf = cv2.BFMatcher()
         knn_matches = bf.knnMatch(des1, des2, k=2)
-        nndr_matches=[]
-        for m,n in knn_matches:
-            if m and n:
-                if m.distance< threshold * n.distance:
-                    nndr_matches.append(m)
+        nndr_filtered_matches = []
 
-        return nndr_matches
+        for match_pair in knn_matches:
+            if len(match_pair) == 2:
+                m, n = match_pair
+                if m.distance < threshold * n.distance:
+                    nndr_filtered_matches.append([m])  # Append as a list
+                else:
+                    nndr_filtered_matches.append([])  # Append an empty list if the match does not meet the criteria
+            else:
+                nndr_filtered_matches.append([])  # Append an empty list if there are not enough matches
+
+        return nndr_filtered_matches
 
     def matching_info(self, kp1, kp2, feature_matches):
         """Collects information about the matches of some feature
