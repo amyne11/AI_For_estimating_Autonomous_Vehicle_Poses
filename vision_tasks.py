@@ -44,9 +44,8 @@ class VisionTasks(VisionTasksBase):
             good_matches = []
 
             for match_list in knn_matches:
-                for match in match_list:
-                    if match and match.distance < threshold:
-                        good_matches.append(match)
+                filtered_list = [match for match in match_list if match.distance < threshold]
+                good_matches.append(filtered_list)
 
             return good_matches
         except Exception as e:
