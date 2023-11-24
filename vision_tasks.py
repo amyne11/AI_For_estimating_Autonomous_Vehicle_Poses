@@ -34,14 +34,14 @@ class VisionTasks(VisionTasksBase):
         :rtype:  list
         """
         bf = cv2.BFMatcher()
-        knn_matches = bf.knnMatch(des1, des2, k=10)
+        knn_matches = bf.knnMatch(des1, des2, k=1500)
         dt_matches=[]
         
         
 
         for m in knn_matches:
             for match in m:
-                if match and match.distance<= threshold:
+                if match and match.distance< threshold:
                     dt_matches.append(match)
             
 
