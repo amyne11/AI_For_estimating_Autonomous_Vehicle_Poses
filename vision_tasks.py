@@ -45,7 +45,7 @@ class VisionTasks(VisionTasksBase):
 
             for match_list in knn_matches:
                 for match in match_list:
-                    if match and match.distance <= threshold:
+                    if match and match.distance < threshold:
                         good_matches.append(match)
 
             return good_matches
@@ -83,10 +83,10 @@ class VisionTasks(VisionTasksBase):
         knn_matches = bf.knnMatch(des1, des2, k=1)
         nn_matches = []
 
-        for match in knn_matches:
-            if match:
-                closest_match = match[0]
-                if closest_match and (threshold is None or closest_match.distance <= threshold):
+        for match_nn in knn_matches:
+            if match_nn:
+                closest_match = match_nn[0]
+                if closest_match and (threshold is None or closest_match.distance < threshold):
                     nn_matches.append(closest_match)
 
         return nn_matches
