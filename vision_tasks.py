@@ -34,7 +34,7 @@ class VisionTasks(VisionTasksBase):
         :rtype:  list
         """
         bf = cv2.BFMatcher()
-        knn_matches = bf.knnMatch(des1, des2, k=2)
+        knn_matches = bf.knnMatch(des1, des2, k=100)
         dt_matches=[]
         
         
@@ -144,8 +144,7 @@ class VisionTasks(VisionTasksBase):
             curr_kp = kp2[match.trainIdx]
             curr_coords.append((int(curr_kp.pt[0]), int(curr_kp.pt[1])))
             distances.append(match.distance)
-            print(curr_coords)
-            print(distances)
+            
 
 
         return prev_coord, curr_coords, distances
