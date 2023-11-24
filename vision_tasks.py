@@ -33,21 +33,25 @@ class VisionTasks(VisionTasksBase):
         :return: matches for descriptors
         :rtype:  list
         """
-        bf = cv2.BFMatcher()
-        knn_matches = bf.knnMatch(des1, des2, k=1500)
-        dt_matches=[]
-        
-        
+        try:
+            # Validate descriptors
+            if des1 is None or des2 is None:
+                print("Descriptors are None")
+                return []
 
-        for m in knn_matches:
-            for match in m:
-                if match and match.distance< threshold:
-                    dt_matches.append(match)
-            
+            bf = cv2.BFMatcher()
+            knn_matches = bf.knnMatch(des1, des2, k=10)
+            good_matches = []
 
-        print(len(dt_matches))
+            for match_list in knn_matches:
+                for match in match_list:
+                    if match and match.distance <= threshold:
+                        good_matches.append(match)
 
-        return dt_matches
+            return good_matches
+        except Exception as e:
+            print(f"An error occurred in dt method: {e}")
+            return []
                 
 
 
@@ -77,7 +81,9 @@ class VisionTasks(VisionTasksBase):
         """
         bf = cv2.BFMatcher()
         knn_matches = bf.knnMatch(des1, des2, k=1)
-        return knn_matches
+        print(len(knn_matches))
+        nn_matches=[knn_matches]
+        return nn_matches
 
     def nndr(self, des1, des2, threshold):
         """Implements feature matching based on nearest neighbour distance ratio
@@ -148,9 +154,7 @@ class VisionTasks(VisionTasksBase):
     
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def convert_to_coords(pt):
-    # Convert the point to integer coordinates
-        return (int(pt[0]), int(pt[1]))
+
 if __name__ == '__main__':
     import run_odometry
     run_odometry.main(sys.argv[1:])
