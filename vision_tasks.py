@@ -36,10 +36,7 @@ class VisionTasks(VisionTasksBase):
         bf = cv2.BFMatcher()
         knn_matches = bf.knnMatch(des1, des2, k=2)
         dt_matches=[]
-       # for i, match_set in enumerate(knn_matches):
-        #    print(f"Matches for descriptor {i}:")
-            #for match in match_set:
-                #print(f" - QueryIdx: {match.queryIdx}, TrainIdx: {match.trainIdx}, Distance: {match.distance}")
+        
         
 
         for match_pair in knn_matches:
@@ -119,27 +116,38 @@ class VisionTasks(VisionTasksBase):
         """
         if not feature_matches:
             return (0, 0), [], []
+        if isinstance(feature_matches, cv2.DMatch):
+            feature_matches = [feature_matches]
         
 
         
         curr_coords=[]
         distances=[]
+        prev_coord=None
         
-        prev_kp = kp1[feature_matches.queryIdx]
-        prev_coord = (int(prev_kp.pt[0]), int(prev_kp.pt[1]))
-        if isinstance(feature_matches, cv2.DMatch):
-            feature_matches = [feature_matches]
+                
+        #prev_coord = (int(prev_kp.pt[0]), int(prev_kp.pt[1]))
+        
+        
         for match in feature_matches:
+            prev_kp = kp1[match.queryIdx]
+            if prev_coord is None:
+                prev_coord = (int(prev_kp.pt[0]), int(prev_kp.pt[1]))
+
+
+            
+                
+
 
             curr_kp = kp2[match.trainIdx]
-            curr_coord = [int(curr_kp.pt[0]), int(curr_kp.pt[1])]
-            curr_coords.append(curr_coord)
+            #curr_coo = [int(curr_kp.pt[0]), int(curr_kp.pt[1])]
+            curr_coords.append((int(curr_kp.pt[0]), int(curr_kp.pt[1])))
             distances.append(match.distance)
             print(curr_coords)
             print(distances)
 
 
-        return prev_coord, curr_coord, distances
+        return prev_coord, curr_coords, distances
 
         
         
