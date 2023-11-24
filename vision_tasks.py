@@ -40,7 +40,7 @@ class VisionTasks(VisionTasksBase):
                 return []
 
             bf = cv2.BFMatcher()
-            knn_matches = bf.knnMatch(des1, des2, k=10)
+            knn_matches = bf.knnMatch(des1, des2, k=1500)
             good_matches = []
 
             for match_list in knn_matches:
