@@ -39,10 +39,12 @@ class VisionTasks(VisionTasksBase):
         
         
 
-        for match_pair in knn_matches:
-            for match in match_pair:
-                if match.distance<threshold:
-                    dt_matches.append(match)
+        for m,n in knn_matches:
+            if m.distance<threshold:
+                dt_matches.append(m)
+            if n.distance<threshold:
+                dt_matches.append(n)
+            
 
              
         '''   for fm in match_list:
