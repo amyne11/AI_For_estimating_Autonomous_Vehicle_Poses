@@ -81,8 +81,13 @@ class VisionTasks(VisionTasksBase):
         """
         bf = cv2.BFMatcher()
         knn_matches = bf.knnMatch(des1, des2, k=1)
-        print(len(knn_matches))
-        nn_matches=[knn_matches]
+        
+        nn_matches=[]
+        for match_nn in knn_matches:
+            if match_nn:
+                m=match_nn[0]
+                if threshold is None or m.distance<threshold:
+                    nn_matches.append(m)
         return nn_matches
 
     def nndr(self, des1, des2, threshold):
