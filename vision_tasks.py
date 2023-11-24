@@ -34,7 +34,7 @@ class VisionTasks(VisionTasksBase):
         :rtype:  list
         """
         bf = cv2.BFMatcher()
-        knn_matches = bf.knnMatch(des1, des2, k=100)
+        knn_matches = bf.knnMatch(des1, des2, k=1)
         dt_matches=[]
         
         
@@ -44,17 +44,7 @@ class VisionTasks(VisionTasksBase):
                 if matches.distance<= threshold:
                     dt_matches.append(matches)
             
-            
 
-             
-        '''   for fm in match_list:
-                if fm.distance<threshold:
-                    dt_matches.append(fm)'''
-        # After you have populated dt_matches with the filtered matches
-
-       # print("Filtered Matches:")
-       # for match in dt_matches:
-          #  print(f" - QueryIdx: {match.queryIdx}, TrainIdx: {match.trainIdx}, Distance: {match.distance}")
 
 
         return dt_matches
@@ -85,7 +75,9 @@ class VisionTasks(VisionTasksBase):
         :return: matches for descriptors
         :rtype:  list
         """
-        return []
+        bf = cv2.BFMatcher()
+        knn_matches = bf.knnMatch(des1, des2, k=1)
+        return knn_matches
 
     def nndr(self, des1, des2, threshold):
         """Implements feature matching based on nearest neighbour distance ratio
