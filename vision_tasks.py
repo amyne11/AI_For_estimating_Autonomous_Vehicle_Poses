@@ -80,15 +80,18 @@ class VisionTasks(VisionTasksBase):
         """
         bf = cv2.BFMatcher()
         knn_matches = bf.knnMatch(des1, des2, k=1)
-        nn_matches = []
+        filtered_matches = []
 
-        for match_nn in knn_matches:
-            if match_nn:
-                closest_match = match_nn[0]
+        for match_list in knn_matches:
+            # Since k=1, each match_list contains a single match
+            if match_list:
+                closest_match = match_list[0]
                 if closest_match and (threshold is None or closest_match.distance < threshold):
-                    nn_matches.append(closest_match)
+                    filtered_matches.append([closest_match])
+                else:
+                    filtered_matches.append([])  # Append an empty list if no match meets the threshold
 
-        return nn_matches
+        return filtered_matches
 
     def nndr(self, des1, des2, threshold):
         """Implements feature matching based on nearest neighbour distance ratio
