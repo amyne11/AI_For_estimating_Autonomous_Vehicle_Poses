@@ -51,3 +51,64 @@ To start the visual odometry system, use the following command:
 ```sh
 python run_odometry.py -d ~/MyKITTI view_trajectory
 ```
+### The main window provides:
+
+- Visualization of the car's camera view and calculated trajectory.
+- Real-time updates of the current frame being processed.
+- Options to inspect feature matches and detailed feature information.
+
+### Configuring the System
+
+You can specify different parameters and algorithms using command-line options. Refer to the comprehensive help messages for each subcommand:
+
+```sh
+python run_odometry.py -h
+```
+
+### AI and Computer Vision
+
+#### Building the AI and Vision System
+
+- **Feature Detection and Matching:** Implement various feature matching strategies to identify correspondences between adjacent images. Use the SIFT algorithm for robust feature detection.
+- **Distance Thresholding:** Implement distance-based thresholding to filter out weak matches.
+- **Nearest Neighbor Matching:** Identify the closest matches based on feature descriptors.
+- **Nearest Neighbor Distance Ratio:** Enhance matching accuracy by comparing distance ratios between the nearest and second-nearest matches.
+
+#### Core Modules and Scripts
+
+- `run_odometry.py`: Command-line tool for running the visual odometry system.
+- `visual_odometry.py`: Main module implementing the visual odometry classes and functions.
+- `vision_tasks_base.py`: Abstract class defining the signatures of methods to be implemented.
+- `vision_tasks.py`: Module to be completed with feature matching algorithms.
+
+### Development
+
+#### Feature Matching Algorithms
+
+**Distance Thresholding (`dt`):**
+
+- Filter matches based on a specified distance threshold.
+- Example usage:
+    ```sh
+    python run_odometry.py get_info -a dt -t 100 150 209
+    ```
+
+**Nearest Neighbor (`nn`):**
+
+- Match each feature to its closest neighbor in the descriptor space.
+- Example usage:
+    ```sh
+    python run_odometry.py get_info -a nn 150 209
+    ```
+
+**Nearest Neighbor Distance Ratio (`nndr`):**
+
+- Use the ratio of distances to the closest and second-closest matches to filter matches.
+- Example usage:
+    ```sh
+    python run_odometry.py get_info -a nndr -t 0.8 150 209
+    ```
+
+### Testing
+
+You can test the implemented algorithms by running the provided subcommands and inspecting the outputs. Use the `view_feature` and `get_info` subcommands to visualize and verify the feature matches.
