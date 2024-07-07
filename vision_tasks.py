@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"""Sample code for Comp24011 SLAM lab solution
-
-NB: The default code in non-functional; it simply avoids type errors
-"""
-
-__author__ = "y54754ae"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 import cv2
