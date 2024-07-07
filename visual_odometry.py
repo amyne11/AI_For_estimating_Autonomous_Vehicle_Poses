@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"""Python code for Comp24011 SLAM lab"""
-
-__author__    = "uoip, mbaxjrb2, a21674fl"
-__copyright__ = "Copyright 2023; please do not distribute!"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 import cv2
